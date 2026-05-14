@@ -1,0 +1,104 @@
+/* =========================
+   MOBILE-FIRST BASE STYLE
+========================= */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    background-color: #f5f5f5;
+}
+
+/* HEADER */
+header {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 4vh 2vw;
+}
+
+/* NAV */
+nav {
+    display: flex;
+    flex-direction: column; /* mobile first */
+    background-color: #333;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 2vh;
+    text-align: center;
+}
+
+/* MAIN */
+main {
+    padding: 4vw;
+}
+
+/* GRID CONTAINER (Step 6) */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr; /* mobile default */
+    gap: 2vh;
+    margin-bottom: 3vh;
+}
+
+/* CARDS */
+.card {
+    background-color: white;
+    padding: 3vh;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 3vh;
+    background-color: #222;
+    color: white;
+}
+
+/* =========================
+   TABLET VIEW
+   min-width: 768px
+========================= */
+
+@media (min-width: 768px) {
+
+    body {
+        font-size: 1.1rem;
+    }
+
+    nav {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* =========================
+   DESKTOP VIEW
+   min-width: 1024px
+========================= */
+
+@media (min-width: 1024px) {
+
+    body {
+        font-size: 1.2rem;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    main {
+        max-width: 1200px;
+        margin: auto;
+    }
+}
