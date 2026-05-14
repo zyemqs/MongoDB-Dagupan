@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ES6 Destructuring Lab</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;700;800&display=swap');
+
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --border: #2a2a2a;
+      --accent: #f0e040;
+      --accent2: #40e0f0;
+      --text: #e8e8e8;
+      --muted: #666;
+      --green: #4ade80;
+      --red: #f87171;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100vh;
+      padding: 40px 24px;
+    }
+
+    header {
+      max-width: 860px;
+      margin: 0 auto 48px;
+      border-left: 4px solid var(--accent);
+      padding-left: 20px;
+    }
+
+    header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-top: 6px;
+    }
+
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .step:hover { border-color: #3a3a3a; }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      background: #1a1a1a;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .step-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 800;
+      background: var(--accent);
+      color: #000;
+      padding: 2px 8px;
+      border-radius: 3px;
+      letter-spacing: 1px;
+    }
+
+    .step-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .step-body {
+      padding: 20px;
+    }
+
+    .step-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+
+    .code-block {
+      background: #0a0a0a;
+      border: 1px solid #222;
+      border-radius: 6px;
+      padding: 16px;
+      font-size: 0.78rem;
+      line-height: 1.8;
+      overflow-x: auto;
+      position: relative;
+    }
+
+    .code-block .label {
+      font-size: 0.65rem;
+      color: var(--accent2);
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      display: block;
+      text-transform: uppercase;
+    }
+
+    .kw { color: #c792ea; }
+    .fn { color: #82aaff; }
+    .str { color: #c3e88d; }
+    .num { color: var(--accent); }
+    .cmt { color: #546e7a; font-style: italic; }
+    .obj { color: var(--accent2); }
+    .var { color: #f07178; }
+
+    .output-section {
+      margin-top: 16px;
+      background: #0a0a0a;
+      border: 1px solid #222;
+      border-radius: 6px;
+      padding: 14px 16px;
+    }
+
+    .output-section .label {
+      font-size: 0.65rem;
+      color: var(--green);
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      display: block;
+      text-transform: uppercase;
+    }
+
+    .output-line {
+      font-size: 0.75rem;
+      line-height: 1.9;
+      color: #aaa;
+    }
+
+    .output-line span.val { color: var(--accent); }
+    .output-line span.tag { color: var(--muted); font-size: 0.7rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>ES6 Destructuring Lab</h1>
+  <p>JavaScript · Array · Object · Nested · Default Values · Function Parameters</p>
+</header>
+
+<main>
+
+  <!-- STEP 1 -->
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">STEP 01</span>
+      <span class="step-title">Project Setup</span>
+    </div>
+    <div class="step-body">
+      <p class="step-desc">Project files created: <code>index.html</code> links to <code>destructuring.js</code> using a &lt;script&gt; tag placed before the closing &lt;/body&gt;. Open the browser console (F12) to view all output from the steps below.</p>
+      <div class="code-block">
+        <span class="label">// HTML linkage</span>
+        <span class="kw">&lt;script</span> src=<span class="str">"destructuring.js"</span><span class="kw">&gt;&lt;/script&gt;</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">STEP 02</span>
+      <span class="step-title">Array Destructuring</span>
+    </div>
+    <div class="step-body">
+      <p class="step-desc">Extract values from arrays using bracket syntax. Supports skipping elements with commas and using rest syntax to collect remaining items.</p>
+      <div class="code-block">
+        <span class="label">// Array Destructuring</span>
+<span class="kw">const</span> <span class="var">colors</span> = [<span class="str">"red"</span>, <span class="str">"green"</span>, <span class="str">"blue"</span>, <span class="str">"yellow"</span>];
+
+<span class="cmt">// Basic extraction</span>
+<span class="kw">const</span> [<span class="var">first</span>, <span class="var">second</span>] = <span class="var">colors</span>;
+
+<span class="cmt">// Skip elements using commas</span>
+<span class="kw">const</span> [, , <span class="var">third</span>] = <span class="var">colors</span>;
+
+<span class="cmt">// Rest syntax to collect remaining</span>
+<span class="kw">const</span> [<span class="var">head</span>, ...<span class="var">rest</span>] = <span class="var">colors</span>;
+
+<span class="cmt">// Swap variables</span>
+<span class="kw">let</span> <span class="var">a</span> = <span class="num">1</span>, <span class="var">b</span> = <span class="num">2</span>;
+[<span class="var">a</span>, <span class="var">b</span>] = [<span class="var">b</span>, <span class="var">a</span>];
+      </div>
+      <div class="output-section">
+        <span class="label">// Console Output</span>
+        <div class="output-line">first: <span class="val">"red"</span>  <span class="tag">// index 0</span></div>
+        <div class="output-line">second: <span class="val">"green"</span>  <span class="tag">// index 1</span></div>
+        <div class="output-line">third: <span class="val">"blue"</span>  <span class="tag">// skipped 0 and 1</span></div>
+        <div class="output-line">head: <span class="val">"red"</span> &nbsp; rest: <span class="val">["green","blue","yellow"]</span></div>
+        <div class="output-line">a: <span class="val">2</span>  b: <span class="val">1</span>  <span class="tag">// swapped</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">STEP 03</span>
+      <span class="step-title">Object Destructuring</span>
+    </div>
+    <div class="step-body">
+      <p class="step-desc">Extract properties from objects using curly brace syntax. Variable names must match property keys (unless renamed — see Step 4).</p>
+      <div class="code-block">
+        <span class="label">// Object Destructuring</span>
+<span class="kw">const</span> <span class="var">student</span> = {
+  <span class="obj">name</span>: <span class="str">"Maria"</span>,
+  <span class="obj">age</span>: <span class="num">21</span>,
+  <span class="obj">course</span>: <span class="str">"Computer Science"</span>,
+  <span class="obj">year</span>: <span class="num">3</span>
+};
+
+<span class="cmt">// Extract multiple properties at once</span>
+<span class="kw">const</span> { <span class="var">name</span>, <span class="var">age</span>, <span class="var">course</span> } = <span class="var">student</span>;
+
+<span class="cmt">// Rest syntax for remaining properties</span>
+<span class="kw">const</span> { <span class="var">name</span>: <span class="var">sName</span>, ...<span class="var">details</span> } = <span class="var">student</span>;
+      </div>
+      <div class="output-section">
+        <span class="label">// Console Output</span>
+        <div class="output-line">name: <span class="val">"Maria"</span></div>
+        <div class="output-line">age: <span class="val">21</span></div>
+        <div class="output-line">course: <span class="val">"Computer Science"</span></div>
+        <div class="output-line">details: <span class="val">{ age: 21, course: "Computer Science", year: 3 }</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">STEP 04</span>
+      <span class="step-title">Advanced Destructuring</span>
+    </div>
+    <div class="step-body">
+      <p class="step-desc">Combine nested destructuring (objects within objects/arrays), default values (used when property is undefined), and variable renaming (colon syntax) for complex data handling.</p>
+      <div class="code-block">
+        <span class="label">// Nested + Defaults + Renaming</span>
+<span class="kw">const</span> <span class="var">employee</span> = {
+  <span class="obj">id</span>: <span class="num">101</span>,
+  <span class="obj">fullName</span>: <span class="str">"Juan dela Cruz"</span>,
+  <span class="obj">address</span>: {
+    <span class="obj">city</span>: <span class="str">"Quezon City"</span>,
+    <span class="obj">country</span>: <span class="str">"Philippines"</span>
+  },
+  <span class="obj">scores</span>: [<span class="num">95</span>, <span class="num">87</span>, <span class="num">91</span>]
+};
+
+<span class="cmt">// Nested destructuring</span>
+<span class="kw">const</span> { <span class="var">address</span>: { <span class="var">city</span>, <span class="var">country</span> } } = <span class="var">employee</span>;
+
+<span class="cmt">// Rename: fullName → name; default for missing prop</span>
+<span class="kw">const</span> {
+  <span class="var">fullName</span>: <span class="var">name</span>,
+  <span class="var">department</span> = <span class="str">"General"</span>
+} = <span class="var">employee</span>;
+
+<span class="cmt">// Nested array destructuring</span>
+<span class="kw">const</span> { <span class="var">scores</span>: [<span class="var">top</span>] } = <span class="var">employee</span>;
+      </div>
+      <div class="output-section">
+        <span class="label">// Console Output</span>
+        <div class="output-line">city: <span class="val">"Quezon City"</span> &nbsp; country: <span class="val">"Philippines"</span></div>
+        <div class="output-line">name: <span class="val">"Juan dela Cruz"</span>  <span class="tag">// renamed from fullName</span></div>
+        <div class="output-line">department: <span class="val">"General"</span>  <span class="tag">// default (not in object)</span></div>
+        <div class="output-line">top score: <span class="val">95</span>  <span class="tag">// first element of scores array</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">STEP 05</span>
+      <span class="step-title">Destructuring in Function Parameters</span>
+    </div>
+    <div class="step-body">
+      <p class="step-desc">Destructure directly inside function signatures to avoid repetitive property access. Works for both array and object parameters, and supports defaults inline.</p>
+      <div class="code-block">
+        <span class="label">// Function Parameter Destructuring</span>
+<span class="cmt">// Object destructuring in params</span>
+<span class="kw">function</span> <span class="fn">greetStudent</span>({ <span class="var">name</span>, <span class="var">course</span> = <span class="str">"Undeclared"</span> }) {
+  <span class="var">console</span>.<span class="fn">log</span>(<span class="str">`Hello, </span>${<span class="var">name</span>}<span class="str">! Course: </span>${<span class="var">course</span>}<span class="str">`</span>);
+}
+
+<span class="cmt">// Array destructuring in params</span>
+<span class="kw">function</span> <span class="fn">showTopTwo</span>([<span class="var">first</span>, <span class="var">second</span>]) {
+  <span class="var">console</span>.<span class="fn">log</span>(<span class="str">`1st: </span>${<span class="var">first</span>}<span class="str">, 2nd: </span>${<span class="var">second</span>}<span class="str">`</span>);
+}
+
+<span class="cmt">// Nested destructuring in params</span>
+<span class="kw">function</span> <span class="fn">getCity</span>({ <span class="var">address</span>: { <span class="var">city</span> } }) {
+  <span class="var">console</span>.<span class="fn">log</span>(<span class="str">`City: </span>${<span class="var">city</span>}<span class="str">`</span>);
+}
+
+<span class="fn">greetStudent</span>({ <span class="obj">name</span>: <span class="str">"Ana"</span>, <span class="obj">course</span>: <span class="str">"IT"</span> });
+<span class="fn">showTopTwo</span>([<span class="num">98</span>, <span class="num">95</span>, <span class="num">90</span>]);
+<span class="fn">getCity</span>(<span class="var">employee</span>);
+      </div>
+      <div class="output-section">
+        <span class="label">// Console Output</span>
+        <div class="output-line"><span class="val">Hello, Ana! Course: IT</span></div>
+        <div class="output-line"><span class="val">1st: 98, 2nd: 95</span></div>
+        <div class="output-line"><span class="val">City: Quezon City</span></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="destructuring.js"></script>
+</body>
+</html>
