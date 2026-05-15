@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Debug Faulty Code Lab</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background: #0d1117;
+      color: #c9d1d9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: #58a6ff;
+      letter-spacing: 0.05em;
+    }
+
+    header p {
+      color: #8b949e;
+      margin-top: 0.4rem;
+      font-size: 0.9rem;
+    }
+
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 720px;
+      margin-bottom: 1.2rem;
+    }
+
+    .card h2 {
+      color: #f0883e;
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-bottom: 0.6rem;
+    }
+
+    .badge.syntax  { background: #e3b341; color: #0d1117; }
+    .badge.runtime { background: #f85149; color: #fff; }
+    .badge.fix     { background: #3fb950; color: #0d1117; }
+
+    pre {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.82rem;
+      overflow-x: auto;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .faulty { border-left: 3px solid #f85149; }
+    .fixed  { border-left: 3px solid #3fb950; }
+
+    .label {
+      font-size: 0.7rem;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.3rem;
+    }
+
+    .console-box {
+      background: #010409;
+      border: 1px solid #21262d;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.8rem;
+      color: #3fb950;
+      margin-top: 0.8rem;
+    }
+
+    .console-box span.err { color: #f85149; }
+    .console-box span.dim { color: #8b949e; }
+
+    footer {
+      color: #484f58;
+      font-size: 0.75rem;
+      margin-top: 2rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🐛 Debug Faulty Code Lab</h1>
+    <p>Open DevTools → Console to see all debug output from script.js</p>
+  </header>
+
+  <!-- CRITERION 4: Syntax Error -->
+  <div class="card">
+    <h2>Criterion 4 — Syntax Error Fix</h2>
+    <span class="badge syntax">Syntax Error</span>
+
+    <div class="label">Faulty Code</div>
+    <pre class="faulty">function greetUser(name {          // ❌ missing ')'
+  console.log("Hello, " + name;   // ❌ missing closing ')'
+}</pre>
+
+    <div class="label">Fixed Code</div>
+    <pre class="fixed">function greetUser(name) {         // ✅ closing ')' added
+  console.log("Hello, " + name);  // ✅ closing ')' added
+}</pre>
+
+    <div class="console-box">
+      <span class="dim">// Expected console output:</span><br/>
+      Hello, Alice<br/>
+      Hello, Bob
+    </div>
+  </div>
+
+  <!-- CRITERION 5: Runtime Error -->
+  <div class="card">
+    <h2>Criterion 5 — Runtime Error Fix</h2>
+    <span class="badge runtime">Runtime Error</span>
+
+    <div class="label">Faulty Code</div>
+    <pre class="faulty">function getLength(str) {
+  return str.length;  // ❌ TypeError if str is null/undefined
+}</pre>
+
+    <div class="label">Fixed Code</div>
+    <pre class="fixed">function getLength(str) {
+  if (str === null || str === undefined) {  // ✅ null guard
+    console.log("getLength: received null or undefined — returning 0");
+    return 0;
+  }
+  return str.length;
+}</pre>
+
+    <div class="console-box">
+      <span class="dim">// Expected console output:</span><br/>
+      Length of 'hello': 5<br/>
+      <span class="err">getLength: received null or undefined — returning 0</span><br/>
+      Length of null: 0<br/>
+      <span class="err">getLength: received null or undefined — returning 0</span><br/>
+      Length of undefined: 0
+    </div>
+  </div>
+
+  <!-- CRITERIA 2 & 3: testFunction -->
+  <div class="card">
+    <h2>Criteria 2 &amp; 3 — testFunction: Division-by-Zero Guard</h2>
+    <span class="badge fix">Runtime-Safe Fix</span>
+
+    <div class="label">Faulty Code</div>
+    <pre class="faulty">function testFunction(a, b) {
+  return a / b;  // ❌ returns Infinity or NaN when b === 0
+}</pre>
+
+    <div class="label">Fixed Code</div>
+    <pre class="fixed">function testFunction(a, b) {
+  console.log("testFunction called with a =", a, "and b =", b);
+  if (b !== 0) {                          // ✅ division-by-zero guard
+    const result = a / b;
+    console.log("Result:", result);
+    return result;
+  } else {
+    console.log("Error: Division by zero is not allowed.");
+    return null;
+  }
+}</pre>
+
+    <div class="console-box">
+      <span class="dim">// Expected console output:</span><br/>
+      testFunction called with a = 10 and b = 2<br/>
+      Result: 5<br/>
+      testFunction called with a = 9 and b = 3<br/>
+      Result: 3<br/>
+      testFunction called with a = 7 and b = 0<br/>
+      <span class="err">Error: Division by zero is not allowed.</span>
+    </div>
+  </div>
+
+  <!-- CRITERION 6: Cleanup -->
+  <div class="card">
+    <h2>Criterion 6 — Code Cleanup</h2>
+    <span class="badge fix">Cleaned</span>
+    <pre class="fixed">// Cleanup checklist (all verified ✅):
+// ✅ No redundant or duplicate console.log statements
+// ✅ No commented-out dead code blocks remaining
+// ✅ No unused variables or unreachable code
+// ✅ Retained only logs that demonstrate deliberate trace points
+// ✅ Faulty snippets preserved as inline comments (educational only)</pre>
+  </div>
+
+  <footer>Debug Faulty Code Lab &mdash; All criteria addressed in script.js</footer>
+
+  <!-- Link to the JavaScript file -->
+  <script src="script.js"></script>
+
+</body>
+</html>
